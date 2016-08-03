@@ -7,4 +7,7 @@
     <string name="number_of_days_between_watering">Number of Days Between Watering</string>
     <string name="plant_name">Plant Name</string>
     <string name="additional_care_instructions">Additional Care Instructions</string>
+    <string name="water_your_plants">Water Your Plants!</string>
+    <string name="number_of_days_s">Number of Days: %s</string>
+    <string name="watering_s">Watering: %s</string>
 </resources>

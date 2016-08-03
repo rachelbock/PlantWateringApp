@@ -3,15 +3,29 @@ package com.rage.plantwateringapp;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import java.util.List;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity implements AddPlantDialogFragment.PlantCreatedListener{
 
     public static final String TAG = MainActivity.class.getSimpleName();
+    private PlantLocalDatabase plantLocalDatabase;
+
+    @Bind(R.id.main_activity_recycler_view)
+    protected RecyclerView recyclerView;
+    protected PlantDisplayRecyclerViewAdapter adapter;
+    protected List<Plant> plants;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +33,16 @@ public class MainActivity extends AppCompatActivity implements AddPlantDialogFra
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        ButterKnife.bind(this);
+
+        plantLocalDatabase = PlantLocalDatabase.getInstance(getApplicationContext());
+        plants = plantLocalDatabase.getPlants();
+
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new PlantDisplayRecyclerViewAdapter(plants);
+        recyclerView.setAdapter(adapter);
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -55,8 +79,9 @@ public class MainActivity extends AppCompatActivity implements AddPlantDialogFra
 
     @Override
     public void onPlantCreated(Plant plant) {
+        plantLocalDatabase.addPlant(plant);
+        plants.add(plant);
+        adapter.notifyDataSetChanged();
 
-        Log.d(TAG, "plant name: " + plant.getName() + " plant num: " + plant.getNumDays() + " plant dets: " + plant.getDetails());
-        //TODO: Add plant to local database?
     }
 }

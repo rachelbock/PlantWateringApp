@@ -16,8 +16,19 @@
         android:id="@+id/main_activity_welcome_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Water Your Plants!"
+        android:text="@string/water_your_plants"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
         />
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_below="@id/main_activity_welcome_text"
+        android:id="@+id/main_activity_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+
+    </android.support.v7.widget.RecyclerView>
 
 </RelativeLayout>

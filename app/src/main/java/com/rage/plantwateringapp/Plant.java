@@ -1,5 +1,6 @@
 package com.rage.plantwateringapp;
 
+import android.content.ContentValues;
 import android.provider.BaseColumns;
 
 /**
@@ -58,6 +59,12 @@ public class Plant implements BaseColumns{
         this.details = details;
     }
 
-
+    public ContentValues getContentValues() {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COL_NAME, name);
+        contentValues.put(COL_NUM_DAYS, numDays);
+        contentValues.put(COL_DETAILS, details);
+        return contentValues;
+    }
 
 }
