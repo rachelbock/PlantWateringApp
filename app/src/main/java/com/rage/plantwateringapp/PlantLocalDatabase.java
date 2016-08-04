@@ -23,7 +23,7 @@ public class PlantLocalDatabase extends SQLiteOpenHelper {
 
     public static PlantLocalDatabase getInstance(Context context) {
         if (instance == null) {
-            instance = new PlantLocalDatabase(context.getApplicationContext(), DB_NAME, null, 1);
+            instance = new PlantLocalDatabase(context.getApplicationContext(), DB_NAME, null, 2);
         }
         return instance;
     }
@@ -38,13 +38,14 @@ public class PlantLocalDatabase extends SQLiteOpenHelper {
                 Plant.COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 Plant.COL_NAME + " TEXT, " +
                 Plant.COL_NUM_DAYS + " INT, " +
+                Plant.COL_DATE_LAST_WATERED + " LONG, " +
                 Plant.COL_DETAILS + " TEXT)"
         );
 
     }
 
     /**
-     * No functionality for upgrading - if called, would delete existing table and call on create.
+     * Delete existing table and call onCreate to set up new table.
      */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

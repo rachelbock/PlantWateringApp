@@ -18,6 +18,7 @@ public class Plant implements BaseColumns{
     public static final String COL_NAME = "plant_name";
     public static final String COL_NUM_DAYS = "num_days";
     public static final String COL_DETAILS = "plant_details";
+    public static final String COL_DATE_LAST_WATERED = "date_last_watered";
     public static final String TABLE_NAME = "plants_table";
 
     public Plant(String name, int numDays, String details) {

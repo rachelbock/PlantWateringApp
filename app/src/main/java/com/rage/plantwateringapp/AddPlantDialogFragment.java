@@ -12,6 +12,7 @@ import android.widget.EditText;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
 /**
@@ -33,7 +34,7 @@ public class AddPlantDialogFragment extends DialogFragment {
     }
 
     public interface PlantCreatedListener {
-        public void onPlantCreated(Plant plant);
+        void onPlantCreated(Plant plant);
 
     }
 
@@ -70,5 +71,17 @@ public class AddPlantDialogFragment extends DialogFragment {
                 .create();
 
         return dialog;
+    }
+
+
+    @OnClick(R.id.add_plant_date_last_watered_button)
+    public void onDateClickedButton() {
+        DatePickerFragment dialogFragment = DatePickerFragment.newInstance();
+        dialogFragment.setTargetFragment(this, 0);
+        dialogFragment.show(getFragmentManager(), "dialog");
+    }
+
+    public void onDateRetrieved() {
+
     }
 }
