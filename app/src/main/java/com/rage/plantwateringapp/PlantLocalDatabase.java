@@ -74,6 +74,10 @@ public class PlantLocalDatabase extends SQLiteOpenHelper {
         return cursor.getInt(cursor.getColumnIndex(columnName));
     }
 
+    public long getCursorLong(Cursor cursor, String columnName) {
+        return cursor.getLong(cursor.getColumnIndex(columnName));
+    }
+
     public List<Plant> getPlants() {
 
         List<Plant> plants = new ArrayList<>();
@@ -85,7 +89,8 @@ public class PlantLocalDatabase extends SQLiteOpenHelper {
                 String name = getCursorString(cursor, Plant.COL_NAME);
                 String details = getCursorString(cursor, Plant.COL_DETAILS);
                 int numDays = getCursorInt(cursor, Plant.COL_NUM_DAYS);
-                Plant plant = new Plant(name, numDays, details);
+                long dateLastWatered = getCursorLong(cursor, Plant.COL_DATE_LAST_WATERED);
+                Plant plant = new Plant(name, numDays, details, dateLastWatered);
                 plants.add(plant);
             }
             while(cursor.moveToNext());

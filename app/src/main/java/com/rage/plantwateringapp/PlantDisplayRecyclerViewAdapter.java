@@ -1,12 +1,18 @@
 package com.rage.plantwateringapp;
 
+import android.content.Context;
 import android.support.annotation.BinderThread;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateFormat;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import org.joda.time.DateTime;
 
 import java.util.List;
 
@@ -24,6 +30,15 @@ public class PlantDisplayRecyclerViewAdapter extends RecyclerView.Adapter<PlantD
         this.plants = plants;
     }
 
+
+    public interface WateredCheckboxListener {
+        void onWaterCheckboxChecked(Plant plant);
+    }
+
+    public interface RowClickListener {
+        void onPlantRowClicked(Plant plant);
+    }
+
     @Override
     public PlantViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
@@ -34,9 +49,27 @@ public class PlantDisplayRecyclerViewAdapter extends RecyclerView.Adapter<PlantD
     @Override
     public void onBindViewHolder(PlantViewHolder holder, int position) {
         Plant plant = plants.get(position);
+        Context context = holder.dateLastWatered.getContext();
+
+        long lastWateredMilis = plant.getDateLastWateredMilis();
+
         holder.nameTextView.setText(plant.getName());
         Integer days = plant.getNumDays();
-        holder.daysWatering.setText(days.toString());
+        String lastWateringDate = DateUtils.formatDateTime(context, lastWateredMilis, DateUtils.FORMAT_SHOW_YEAR | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_ABBREV_ALL);
+        holder.dateLastWatered.setText(lastWateringDate);
+        DateTime dt = new DateTime(plant.getDateLastWateredMilis());
+        dt = dt.plusDays(days);
+        String nextWatering = DateUtils.formatDateTime(context, dt.getMillis(), DateUtils.FORMAT_SHOW_YEAR | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_ABBREV_ALL );
+        holder.nextWateringDate.setText(nextWatering);
+
+        //TODO: How to respond if watered Checkbox is checked.
+
+        holder.fullView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: Launch Plant Detail Fragment
+            }
+        });
 
     }
 
@@ -53,11 +86,20 @@ public class PlantDisplayRecyclerViewAdapter extends RecyclerView.Adapter<PlantD
         @Bind(R.id.plant_detail_row_plant_image)
         protected ImageView plantImage;
 
-        @Bind(R.id.plant_detail_row_watering_days)
-        protected TextView daysWatering;
+        @Bind(R.id.plant_detail_row_date_last_watered)
+        protected TextView dateLastWatered;
+
+        @Bind(R.id.plant_detail_row_next_watering_date)
+        protected TextView nextWateringDate;
+
+        @Bind(R.id.plant_detail_row_watered_checkbox)
+        protected CheckBox wateredCheckbox;
+
+        protected View fullView;
 
         public PlantViewHolder(View itemView) {
             super(itemView);
+            fullView = itemView;
             ButterKnife.bind(this, itemView);
 
         }

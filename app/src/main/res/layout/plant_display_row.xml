@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="horizontal"
     android:padding="10dp"
     >
 
@@ -12,23 +13,93 @@
         android:layout_height="50dp"
         android:src="@drawable/plant_default_image"
         android:layout_marginEnd="5dp"
-        />
-    <TextView
-        android:layout_toRightOf="@id/plant_detail_row_plant_image"
-        android:id="@+id/plant_detail_row_name_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="Plant Name"
-        android:textSize="20sp"
-        android:layout_marginEnd="5dp"
-        />
-    <TextView
-        android:layout_alignParentEnd="true"
-        android:id="@+id/plant_detail_row_watering_days"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/watering_s"
-        android:textSize="20sp"
+        android:layout_weight="1"
         />
 
-</RelativeLayout>
+    <LinearLayout
+        android:id="@+id/plant_detail_row_name_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginEnd="5dp"
+        android:layout_weight="1"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/plant_name"
+            />
+        <TextView
+            android:id="@+id/plant_detail_row_name_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Plant Name"
+            />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/plant_detail_row_last_watered_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginEnd="5dp"
+        android:layout_weight="1"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Last"
+            />
+        <TextView
+            android:id="@+id/plant_detail_row_date_last_watered"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/plant_detail_row_next_watering_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginEnd="5dp"
+        android:layout_weight="1"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Next"
+            />
+        <TextView
+            android:id="@+id/plant_detail_row_next_watering_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="1"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/watered"
+            />
+        <android.support.v7.widget.AppCompatCheckBox
+            android:id="@+id/plant_detail_row_watered_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

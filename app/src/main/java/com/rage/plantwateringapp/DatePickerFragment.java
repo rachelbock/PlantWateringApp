@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 
+import org.joda.time.DateTime;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -22,6 +24,8 @@ import butterknife.ButterKnife;
  */
 public class DatePickerFragment extends DialogFragment {
 
+
+    public static final String TAG = DatePickerFragment.class.getSimpleName();
 
     @Bind(R.id.date_picker)
     protected DatePicker datePicker;
@@ -46,10 +50,12 @@ public class DatePickerFragment extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         int day = datePicker.getDayOfMonth();
-                        int month = datePicker.getMonth();
+                        int month = datePicker.getMonth() + 1;
                         int year = datePicker.getYear();
-                        Log.d("TAG", "date = : " + day + ", " + month + ", " + year);
-                        ((AddPlantDialogFragment) getTargetFragment()).onDateRetrieved();
+
+                        DateTime dt = new DateTime(year, month, day, 0, 0);
+                        long dateMilis = dt.getMillis();
+                        ((AddPlantDialogFragment) getTargetFragment()).onDateRetrieved(dateMilis);
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

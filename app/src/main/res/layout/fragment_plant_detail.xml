@@ -1,0 +1,71 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.rage.plantwateringapp.PlantDetailFragment"
+    android:layout_margin="10dp"
+    >
+
+
+    <TextView
+        android:id="@+id/plant_detail_page_title_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/plant_details"
+        android:layout_centerHorizontal="true"
+        />
+
+
+    <android.support.v7.widget.CardView
+        android:layout_below="@id/plant_detail_page_title_text"
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="5dp"
+        >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:id="@+id/plant_detail_page_additional_care"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/additional_instructs"
+                />
+
+            <TextView
+                android:id="@+id/plant_detail_page_number_days_watering"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/number_of_days_between_watering_s"
+                />
+
+            <TextView
+                android:id="@+id/plant_detail_page_last_watered_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/date_last_watered_s"
+                />
+
+            <TextView
+                android:id="@+id/plant_Detail_page_next_watering_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/date_of_next_watering_s"
+                />
+            <TextView
+                android:id="@+id/plant_detail_page_details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="@string/plant_details"
+                />
+
+        </LinearLayout>
+
+
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>

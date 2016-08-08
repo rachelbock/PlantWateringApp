@@ -6,9 +6,11 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -27,6 +29,7 @@ public class AddPlantDialogFragment extends DialogFragment {
     @Bind(R.id.add_plant_additional_instructions)
     protected EditText careInstructions;
     private PlantCreatedListener listener;
+    private long dateLastWatered;
 
 
     public AddPlantDialogFragment() {
@@ -55,11 +58,19 @@ public class AddPlantDialogFragment extends DialogFragment {
                 .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String name = plantName.getText().toString();
-                        int days = Integer.parseInt(numDaysString.getText().toString());
-                        String details = careInstructions.getText().toString();
-                        Plant plant = new Plant(name, days, details);
-                        listener.onPlantCreated(plant);
+                        if (dateLastWatered == 0) {
+                            Toast.makeText(getContext(), "Must choose a date", Toast.LENGTH_SHORT).show();
+                        } else {
+                            if (isEditTextEmpty(plantName) || isEditTextEmpty(numDaysString) || isEditTextEmpty(careInstructions)) {
+                                Toast.makeText(getContext(), "Must complete all fields", Toast.LENGTH_SHORT).show();
+                            } else {
+                                String name = plantName.getText().toString();
+                                int days = Integer.parseInt(numDaysString.getText().toString());
+                                String details = careInstructions.getText().toString();
+                                Plant plant = new Plant(name, days, details, dateLastWatered);
+                                listener.onPlantCreated(plant);
+                            }
+                        }
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -81,7 +92,12 @@ public class AddPlantDialogFragment extends DialogFragment {
         dialogFragment.show(getFragmentManager(), "dialog");
     }
 
-    public void onDateRetrieved() {
+    public void onDateRetrieved(long dateMilis) {
+        dateLastWatered = dateMilis;
 
+    }
+
+    public boolean isEditTextEmpty(EditText editText) {
+        return editText.getText().toString().trim().length() == 0;
     }
 }
