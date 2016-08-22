@@ -1,9 +1,13 @@
 package com.rage.plantwateringapp;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,6 +95,7 @@ public class PlantLocalDatabase extends SQLiteOpenHelper {
                 int numDays = getCursorInt(cursor, Plant.COL_NUM_DAYS);
                 long dateLastWatered = getCursorLong(cursor, Plant.COL_DATE_LAST_WATERED);
                 Plant plant = new Plant(name, numDays, details, dateLastWatered);
+                plant.setId(getCursorInt(cursor, Plant.COL_ID));
                 plants.add(plant);
             }
             while(cursor.moveToNext());
@@ -98,6 +103,20 @@ public class PlantLocalDatabase extends SQLiteOpenHelper {
         cursor.close();
 
         return plants;
+    }
+
+    public void updateDateLastWatered(Plant plant){
+
+        LocalDate date = new LocalDate();
+        int year = date.getYear();
+        int month = date.getMonthOfYear();
+        int day = date.getDayOfMonth();
+        DateTime dt = new DateTime(year, month, day, 0, 0);
+        Long millis = dt.getMillis();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(Plant.COL_DATE_LAST_WATERED, millis);
+        getWritableDatabase().update(Plant.TABLE_NAME, contentValues, Plant.COL_ID + " = ?", new String[]{String.valueOf(plant.getId())});
     }
 
 }

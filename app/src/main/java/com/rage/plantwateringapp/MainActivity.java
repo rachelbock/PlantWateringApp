@@ -1,12 +1,12 @@
 package com.rage.plantwateringapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,7 +16,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements AddPlantDialogFragment.PlantCreatedListener{
+public class MainActivity extends AppCompatActivity implements AddPlantDialogFragment.PlantCreatedListener, PlantDisplayRecyclerViewAdapter.RowClickListener, PlantDisplayRecyclerViewAdapter.WateredCheckboxListener{
 
     public static final String TAG = MainActivity.class.getSimpleName();
     private PlantLocalDatabase plantLocalDatabase;
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements AddPlantDialogFra
 
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new PlantDisplayRecyclerViewAdapter(plants);
+        adapter = new PlantDisplayRecyclerViewAdapter(plants, this, this);
         recyclerView.setAdapter(adapter);
 
 
@@ -82,6 +82,19 @@ public class MainActivity extends AppCompatActivity implements AddPlantDialogFra
         plantLocalDatabase.addPlant(plant);
         plants.add(plant);
         adapter.notifyDataSetChanged();
+
+    }
+
+    @Override
+    public void onPlantRowClicked(Plant plant) {
+        Intent intent = new Intent(MainActivity.this, PlantDetailActivity.class);
+        intent.putExtra(PlantDetailActivity.ARG_PLANT, plant);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onWaterCheckboxChecked(Plant plant) {
+        plantLocalDatabase.updateDateLastWatered(plant);
 
     }
 }

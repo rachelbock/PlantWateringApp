@@ -1,9 +1,7 @@
 package com.rage.plantwateringapp;
 
 import android.content.Context;
-import android.support.annotation.BinderThread;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.DateFormat;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,9 +23,13 @@ import butterknife.ButterKnife;
 public class PlantDisplayRecyclerViewAdapter extends RecyclerView.Adapter<PlantDisplayRecyclerViewAdapter.PlantViewHolder>{
 
     protected List<Plant> plants;
+    protected RowClickListener rowClickListener;
+    protected WateredCheckboxListener wateredCheckboxListener;
 
-    public PlantDisplayRecyclerViewAdapter(List<Plant> plants){
+    public PlantDisplayRecyclerViewAdapter(List<Plant> plants, RowClickListener rowClickListener, WateredCheckboxListener wateredCheckboxListener ){
         this.plants = plants;
+        this.rowClickListener = rowClickListener;
+        this.wateredCheckboxListener = wateredCheckboxListener;
     }
 
 
@@ -43,13 +45,14 @@ public class PlantDisplayRecyclerViewAdapter extends RecyclerView.Adapter<PlantD
     public PlantViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View plantView = inflater.inflate(R.layout.plant_display_row, parent, false);
+
         return new PlantViewHolder(plantView);
     }
 
     @Override
-    public void onBindViewHolder(PlantViewHolder holder, int position) {
-        Plant plant = plants.get(position);
-        Context context = holder.dateLastWatered.getContext();
+    public void onBindViewHolder(final PlantViewHolder holder, int position) {
+        final Plant plant = plants.get(position);
+        final Context context = holder.dateLastWatered.getContext();
 
         long lastWateredMilis = plant.getDateLastWateredMilis();
 
@@ -62,12 +65,21 @@ public class PlantDisplayRecyclerViewAdapter extends RecyclerView.Adapter<PlantD
         String nextWatering = DateUtils.formatDateTime(context, dt.getMillis(), DateUtils.FORMAT_SHOW_YEAR | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_ABBREV_ALL );
         holder.nextWateringDate.setText(nextWatering);
 
-        //TODO: How to respond if watered Checkbox is checked.
+        holder.wateredCheckbox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (wateredCheckboxListener != null) {
+                    wateredCheckboxListener.onWaterCheckboxChecked(plants.get(holder.getAdapterPosition()));
+                }
+            }
+        });
 
         holder.fullView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: Launch Plant Detail Fragment
+                if (rowClickListener != null) {
+                    rowClickListener.onPlantRowClicked(plants.get(holder.getAdapterPosition()));
+                }
             }
         });
 
